@@ -1,103 +1,100 @@
 /* Basic Setup */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5;
-    color: #1c1e21;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: 'Georgia', serif;
     margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
+    overflow: hidden; /* Prevent scrollbars when dragging notes */
+    background-color: #333;
+    background-image: url('https://www.transparenttextures.com/patterns/cork-wallet.png'); /* Corkboard texture */
 }
 
+/* The main area will be our canvas for the notes */
 main {
-    width: 100%;
-    max-width: 600px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: 100vw;
+    height: 100vh;
 }
 
-/* Header */
-header {
-    text-align: center;
-    margin-bottom: 2rem;
+/* --- HIDE THE OLD ELEMENTS --- */
+header, #shouts-container {
+    display: none;
 }
 
-h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Form */
+/* The input form, centered on the page */
 #shout-form {
-    display: flex;
-    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    z-index: 1000; /* Always on top */
+    text-align: center;
 }
 
 textarea {
-    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'Georgia', serif;
     font-size: 1rem;
-    padding: 12px;
-    border: 1px solid #dddfe2;
-    border-radius: 8px;
-    resize: vertical;
-    min-height: 60px;
-    margin-bottom: 1rem;
-}
-
-textarea:focus {
-    outline: none;
-    border-color: #1877f2;
+    margin-bottom: 10px;
 }
 
 button {
-    background-color: #1877f2;
-    color: #ffffff;
-    font-size: 1.1rem;
-    font-weight: bold;
+    background-color: #4a90e2;
+    color: white;
     border: none;
-    border-radius: 8px;
-    padding: 12px;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
     transition: background-color 0.2s;
 }
 
 button:hover {
-    background-color: #166fe5;
+    background-color: #357abd;
 }
 
-/* Shouts Container */
-#shouts-container {
-    margin-top: 2rem;
-}
 
-/* Individual Shout Post */
-.shout-post {
-    background-color: #f0f2f5;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+/* Styling for each individual note */
+.note {
+    position: absolute; /* This is key for random placement and dragging */
+    width: 200px;
+    height: 200px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    font-size: 1.1rem;
+    word-wrap: break-word;
+    cursor: grab; /* Indicates the item is draggable */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     animation: fadeIn 0.5s ease-in-out;
 }
 
-.shout-post p {
+.note:hover {
+    transform: scale(1.05);
+    box-shadow: 10px 10px 25px rgba(0,0,0,0.4);
+}
+
+/* Style for when a note is being actively dragged */
+.note.dragging {
+    cursor: grabbing;
+    box-shadow: 10px 10px 25px rgba(0,0,0,0.4);
+    transition: none; /* Turn off transitions while dragging for smoothness */
+}
+
+.note p {
     margin: 0;
-    font-size: 1.1rem;
-    word-wrap: break-word; /* Makes sure long words don't overflow */
 }
 
-.shout-post small {
-    display: block;
-    margin-top: 0.5rem;
-    color: #65676b;
-    text-align: right;
-}
-
+/* Animation for new notes appearing */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
 }

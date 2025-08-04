@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Good Vibes Wall</title>
+    <title>The Creative Shout Wall</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <main>
-        <header>
-            <h1>The Good Vibes Wall ✨</h1>
-            <p>Post a positive, anonymous message for everyone to see.</p>
-        </header>
-
+    <main id="notes-canvas">
         <form id="shout-form">
             <textarea
                 id="shout-input"
@@ -22,10 +17,8 @@
                 maxlength="140"
                 required
             ></textarea>
-            <button type="submit">Shout It!</button>
+            <button type="submit">Post It!</button>
         </form>
-
-        <section id="shouts-container"></section>
     </main>
 </body>
 </html>
