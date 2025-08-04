@@ -5,8 +5,7 @@ Shout-Out Wall
 A simple, full-stack web application where users can post anonymous, positive messages for everyone to see. This project was built to learn and demonstrate the fundamentals of web development, including creating a frontend, a backend API, connecting to a database, and deploying to the web.
 
 Live Demo
-You can view the live application here: [Paste Your Public Frontend URL from Render Here]
-
+You can view the live application here: https://shout-wall-oudm.onrender.com/
 Features
 Post anonymous messages.
 
