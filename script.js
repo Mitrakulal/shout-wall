@@ -6,7 +6,7 @@ const shoutInput = document.getElementById('shout-input');
 const shoutsContainer = document.getElementById('shouts-container');
 
 // --- The address of our backend server ---
-const API_URL = 'https://shout-wall.onrender.comgit ';
+const API_URL = 'https://shout-wall-backend.onrender.comgit ';
 
 // --- Event Listeners ---
 shoutForm.addEventListener('submit', (event) => {
@@ -16,7 +16,7 @@ shoutForm.addEventListener('submit', (event) => {
     if (message) {
         const shoutData = { message };
 
-        // Send the new shout to the backend server
+        // Send the new shout to the backend servergit
         fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify(shoutData),
