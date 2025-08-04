@@ -6,7 +6,7 @@ const shoutInput = document.getElementById('shout-input');
 const shoutsContainer = document.getElementById('shouts-container');
 
 // --- The address of our backend server ---
-const API_URL = 'http://localhost:3000/shouts';
+const API_URL = 'https://shout-wall.onrender.comgit ';
 
 // --- Event Listeners ---
 shoutForm.addEventListener('submit', (event) => {
