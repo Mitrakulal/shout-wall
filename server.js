@@ -1,4 +1,4 @@
-// server.js - UPDATED FOR POSITION SAVING
+// server.js - Simple version (no position saving)
 
 const express = require('express');
 const cors = require('cors');
@@ -10,26 +10,22 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-const dbConnectionString = 'YOUR_MONGODB_CONNECTION_STRING'; // Make sure your real connection string is here!
+// Make sure your real connection string is here!
+const dbConnectionString = 'YOUR_MONGODB_CONNECTION_STRING'; 
 
 mongoose.connect(dbConnectionString)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
     .catch((error) => console.error('❌ Error connecting to MongoDB:', error));
 
-// --- MONGOOSE SCHEMA AND MODEL ---
-// ** NEW: Added x and y coordinates to our schema **
+// The simple schema without x and y coordinates
 const shoutSchema = new mongoose.Schema({
     message: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    x: { type: Number }, // To store the left position
-    y: { type: Number }  // To store the top position
+    createdAt: { type: Date, default: Date.now }
 });
 
 const Shout = mongoose.model('Shout', shoutSchema);
 
-// --- API ROUTES ---
-
-// GET /shouts (No change here)
+// GET /shouts - Fetches all shouts
 app.get('/shouts', async (req, res) => {
     try {
         const shouts = await Shout.find({}).sort({ createdAt: -1 });
@@ -39,7 +35,7 @@ app.get('/shouts', async (req, res) => {
     }
 });
 
-// POST /shouts (No change here)
+// POST /shouts - Creates a new shout
 app.post('/shouts', async (req, res) => {
     try {
         const message = req.body.message.trim();
@@ -55,32 +51,7 @@ app.post('/shouts', async (req, res) => {
     }
 });
 
-// ** NEW: API endpoint to UPDATE a note's position **
-// It will handle requests like: PUT /shouts/12345
-app.put('/shouts/:id', async (req, res) => {
-    try {
-        const { id } = req.params; // The note's unique ID
-        const { x, y } = req.body;   // The new x and y coordinates from the frontend
-
-        // Find the note by its ID and update its x and y fields
-        const updatedShout = await Shout.findByIdAndUpdate(
-            id,
-            { x, y },
-            { new: true } // Return the updated document
-        );
-
-        if (!updatedShout) {
-            return res.status(404).json({ error: "Note not found" });
-        }
-
-        res.json(updatedShout);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to update note position" });
-    }
-});
-
-
-// --- START SERVER ---
+// Start the server
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
