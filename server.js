@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // --- DATABASE CONNECTION ---
-const dbConnectionString = 'mongodb+srv://kulalmitra:Z1K3KE9SWx3FVkVD@cluster0.demksbe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Make sure your real connection string is here!
+const dbConnectionString = 'mongodb+srv://kulalmitra:mitra123@cluster0.demksbe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Make sure your real connection string is here!
 
 mongoose.connect(dbConnectionString)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
