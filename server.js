@@ -1,4 +1,4 @@
-// server.js - UPDATED TO SAVE NOTE COLOR
+// server.js - FINAL CORRECT VERSION
 
 const express = require('express');
 const cors = require('cors');
@@ -10,26 +10,26 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-// Make sure your real connection string is here!
-const dbConnectionString = 'mongodb+srv://kulalmitra:mitra@cluster0.demksbe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
+// IMPORTANT: Make sure your real connection string is here!
+const dbConnectionString = 'mongodb+srv://kulalmitra:mitra@cluster0.demksbe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 mongoose.connect(dbConnectionString)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
     .catch((error) => console.error('❌ Error connecting to MongoDB:', error));
 
 // --- MONGOOSE SCHEMA AND MODEL ---
-// ** NEW: Added 'color' to our schema **
+// ** CORRECTED: Added the 'name' field back into the schema **
 const shoutSchema = new mongoose.Schema({
     message: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
-    color: { type: String } // To store the hex code of the note color
+    color: { type: String },
+    name: { type: String, default: 'Anonymous' } // This line was missing
 });
 
 const Shout = mongoose.model('Shout', shoutSchema);
 
 // --- API ROUTES ---
 
-// GET /shouts (No change here, it will automatically return the new color field)
 app.get('/shouts', async (req, res) => {
     try {
         const shouts = await Shout.find({}).sort({ createdAt: -1 });
@@ -39,15 +39,22 @@ app.get('/shouts', async (req, res) => {
     }
 });
 
-// ** UPDATED: The POST route now accepts and saves the color **
 app.post('/shouts', async (req, res) => {
     try {
-        const { message, color } = req.body; // Destructure message and color from the request
+        let { message, color, name } = req.body;
         const trimmedMessage = message.trim();
+        let authorName = name.trim();
+
+        if (!authorName) {
+            authorName = 'Anonymous';
+        }
 
         if (trimmedMessage) {
-            // Create the new note with the message and color
-            const newShout = new Shout({ message: trimmedMessage, color: color });
+            const newShout = new Shout({ 
+                message: trimmedMessage, 
+                color: color,
+                name: authorName 
+            });
             await newShout.save();
             res.status(201).json(newShout);
         } else {
