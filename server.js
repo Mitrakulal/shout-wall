@@ -1,5 +1,3 @@
-// server.js - Simple version (no position saving)
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -17,7 +15,6 @@ mongoose.connect(dbConnectionString)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
     .catch((error) => console.error('❌ Error connecting to MongoDB:', error));
 
-// The simple schema without x and y coordinates
 const shoutSchema = new mongoose.Schema({
     message: { type: String, required: true },
     createdAt: { type: Date, default: Date.now }
@@ -25,7 +22,6 @@ const shoutSchema = new mongoose.Schema({
 
 const Shout = mongoose.model('Shout', shoutSchema);
 
-// GET /shouts - Fetches all shouts
 app.get('/shouts', async (req, res) => {
     try {
         const shouts = await Shout.find({}).sort({ createdAt: -1 });
@@ -35,7 +31,6 @@ app.get('/shouts', async (req, res) => {
     }
 });
 
-// POST /shouts - Creates a new shout
 app.post('/shouts', async (req, res) => {
     try {
         const message = req.body.message.trim();
@@ -51,7 +46,6 @@ app.post('/shouts', async (req, res) => {
     }
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
