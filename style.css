@@ -147,7 +147,7 @@ button[type="submit"]:active {
 }
 
 
-/* --- Note styling remains the same --- */
+/* --- Note styling updated for timestamp --- */
 .note {
     position: absolute;
     width: 200px;
@@ -160,6 +160,10 @@ button[type="submit"]:active {
     word-wrap: break-word;
     cursor: grab;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    /* --- MODIFIED: Added these three lines for positioning --- */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .note:hover {
@@ -173,6 +177,15 @@ button[type="submit"]:active {
 
 .note p { margin: 0; }
 
+/* --- NEW: Style for the timestamp text --- */
+.note small {
+    font-size: 0.75rem;
+    color: #555;
+    text-align: right;
+    font-family: 'Poppins', sans-serif; /* Use the modern font for the date */
+}
+
+
 /* --- Keyframe animations --- */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -184,8 +197,7 @@ button[type="submit"]:active {
     to   { transform: translateY(0); opacity: 1; }
 }
 
-/* --- NEW: Add these styles to the bottom of your style.css file --- */
-
+/* --- Color picker styles --- */
 .color-picker {
     display: flex;
     justify-content: space-between;

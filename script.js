@@ -1,4 +1,4 @@
-// script.js - UPDATED WITH COLOR PICKER LOGIC
+// script.js - UPDATED WITH TIMESTAMP DISPLAY
 
 // --- DOM Elements ---
 const shoutForm = document.getElementById('shout-form');
@@ -7,7 +7,6 @@ const notesCanvas = document.getElementById('notes-canvas');
 const addNoteBtn = document.getElementById('add-note-btn');
 const modalOverlay = document.getElementById('modal-overlay');
 const closeBtn = document.querySelector('.close-btn');
-// ** NEW: Select the color picker elements **
 const colorSwatches = document.querySelectorAll('.color-swatch');
 
 // --- Your Live API URL ---
@@ -18,23 +17,16 @@ let draggedNote = null;
 let offsetX = 0;
 let offsetY = 0;
 let highestZ = 1;
-// ** NEW: Variable to store the selected color **
 let selectedColor = '#ffc'; // Default color
 
 // --- Creative Flair: Colors for the notes ---
-// This array is now used for old notes that don't have a color saved
 const defaultNoteColors = ['#ffc', '#cfc', '#ccf', '#fcc', '#cff', '#ffb5e8'];
 
 // --- Event Listeners ---
-
-// ** NEW: Logic for handling color selection **
 colorSwatches.forEach(swatch => {
     swatch.addEventListener('click', () => {
-        // Remove 'selected' class from all swatches
         colorSwatches.forEach(s => s.classList.remove('selected'));
-        // Add 'selected' class to the clicked one
         swatch.classList.add('selected');
-        // Update the selectedColor variable
         selectedColor = swatch.dataset.color;
     });
 });
@@ -50,7 +42,6 @@ shoutForm.addEventListener('submit', (event) => {
     const message = shoutInput.value.trim();
     if (!message) return;
 
-    // ** UPDATED: Include the selected color in the data sent to the backend **
     const shoutData = { message, color: selectedColor };
 
     fetch(API_URL, {
@@ -68,19 +59,27 @@ shoutForm.addEventListener('submit', (event) => {
 });
 
 // --- Functions ---
+
 function createNote(shout) {
     const noteDiv = document.createElement('div');
     noteDiv.className = 'note';
     
     const messageP = document.createElement('p');
     messageP.textContent = shout.message;
+    
+    // --- NEW: Create and format the timestamp ---
+    const timestampSmall = document.createElement('small');
+    // The toLocaleString() method makes the date easy to read
+    timestampSmall.textContent = new Date(shout.createdAt).toLocaleString();
+    
+    // Add the message and timestamp to the note
     noteDiv.appendChild(messageP);
+    noteDiv.appendChild(timestampSmall);
+    // --- END OF NEW CODE ---
 
-    // ** UPDATED: Use the saved color, or a default/random one if it doesn't exist **
     if (shout.color) {
         noteDiv.style.backgroundColor = shout.color;
     } else {
-        // Fallback for old notes without a color
         noteDiv.style.backgroundColor = defaultNoteColors[Math.floor(Math.random() * defaultNoteColors.length)];
     }
 
@@ -114,12 +113,7 @@ function loadShouts() {
 }
 
 
-// --- Drag and Drop Functions (No changes here) ---
-function makeDraggable(note) { /* ... same as before ... */ }
-function onDragStart(event) { /* ... same as before ... */ }
-function onDragMove(event) { /* ... same as before ... */ }
-function onDragEnd() { /* ... same as before ... */ }
-// For completeness, here they are again:
+// --- Drag and Drop Functions ---
 function makeDraggable(note) {
     note.addEventListener('mousedown', onDragStart);
     note.addEventListener('touchstart', onDragStart);
