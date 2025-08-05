@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // Make sure your real connection string is here!
-const dbConnectionString = 'YOUR_MONGODB_CONNECTION_STRING'; 
+const dbConnectionString = 'mongodb+srv://kulalmitra:mitra@cluster0.demksbe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
 
 mongoose.connect(dbConnectionString)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
