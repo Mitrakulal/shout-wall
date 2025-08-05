@@ -1,100 +1,108 @@
+/* style.css - Original Simple List Version */
+
 /* Basic Setup */
 body {
-    font-family: 'Georgia', serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #1c1e21;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
     margin: 0;
-    overflow: hidden; /* Prevent scrollbars when dragging notes */
-    background-color: #333;
-    background-image: url('https://www.transparenttextures.com/patterns/cork-wallet.png'); /* Corkboard texture */
-}
-
-/* The main area will be our canvas for the notes */
-main {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-}
-
-/* --- HIDE THE OLD ELEMENTS --- */
-header, #shouts-container {
-    display: none;
-}
-
-/* The input form, centered on the page */
-#shout-form {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background-color: #fff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    z-index: 1000; /* Always on top */
+    box-sizing: border-box;
+}
+
+main {
+    width: 100%;
+    max-width: 600px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+header {
     text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #dddfe2;
+    padding-bottom: 1rem;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Form */
+#shout-form {
+    display: flex;
+    flex-direction: column;
 }
 
 textarea {
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 80px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    font-family: 'Georgia', serif;
+    font-family: inherit;
     font-size: 1rem;
-    margin-bottom: 10px;
+    padding: 12px;
+    border: 1px solid #dddfe2;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 60px;
+    margin-bottom: 1rem;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #1877f2;
 }
 
 button {
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: #1877f2;
+    color: #ffffff;
+    font-size: 1.1rem;
     font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
     transition: background-color 0.2s;
 }
 
 button:hover {
-    background-color: #357abd;
+    background-color: #166fe5;
 }
 
+/* Shouts Container */
+#shouts-container {
+    margin-top: 2rem;
+}
 
-/* Styling for each individual note */
-.note {
-    position: absolute; /* This is key for random placement and dragging */
-    width: 200px;
-    height: 200px;
-    padding: 20px;
-    box-sizing: border-box;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-    font-size: 1.1rem;
-    word-wrap: break-word;
-    cursor: grab; /* Indicates the item is draggable */
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+/* Individual Shout Post */
+.shout-post {
+    background-color: #f0f2f5;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
     animation: fadeIn 0.5s ease-in-out;
 }
 
-.note:hover {
-    transform: scale(1.05);
-    box-shadow: 10px 10px 25px rgba(0,0,0,0.4);
-}
-
-/* Style for when a note is being actively dragged */
-.note.dragging {
-    cursor: grabbing;
-    box-shadow: 10px 10px 25px rgba(0,0,0,0.4);
-    transition: none; /* Turn off transitions while dragging for smoothness */
-}
-
-.note p {
+.shout-post p {
     margin: 0;
+    font-size: 1.1rem;
+    word-wrap: break-word; /* Makes sure long words don't overflow */
 }
 
-/* Animation for new notes appearing */
+.shout-post small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #65676b;
+    text-align: right;
+}
+
+/* Animation for new posts appearing */
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
