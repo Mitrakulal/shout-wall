@@ -17,6 +17,31 @@ body {
     height: 100vh;
 }
 
+/* --- NEW: Styles for the Site Header --- */
+.site-header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    z-index: 1; /* Puts the header behind the notes */
+    pointer-events: none; /* Allows you to click "through" the header */
+}
+
+.site-header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.site-header p {
+    font-size: 1rem;
+    margin-top: 5px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+
 /* Floating Action Button (the plus icon) */
 #add-note-btn {
     position: fixed;
@@ -177,7 +202,7 @@ button[type="submit"]:active {
 
 .note p { margin: 0; }
 
-/* --- NEW: Style for the timestamp text --- */
+/* --- Style for the timestamp text --- */
 .note small {
     font-size: 0.75rem;
     color: #555;
