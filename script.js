@@ -1,20 +1,46 @@
-// script.js - UPDATED WITH TOUCH SUPPORT
-
+// --- DOM Elements ---
 const shoutForm = document.getElementById('shout-form');
 const shoutInput = document.getElementById('shout-input');
 const notesCanvas = document.getElementById('notes-canvas');
+// ** NEW: Select the new elements **
+const addNoteBtn = document.getElementById('add-note-btn');
+const modalOverlay = document.getElementById('modal-overlay');
+const closeBtn = document.querySelector('.close-btn');
 
-// Make sure your live backend URL is here!
-const API_URL = 'https://shout-wall.onrender.com/shouts'; 
 
+// --- Your Live API URL ---
+const API_URL = 'https://shout-wall.onrender.com/shouts'; // Use your real backend URL
+
+// --- Drag and Drop Variables ---
 let draggedNote = null;
 let offsetX = 0;
 let offsetY = 0;
 let highestZ = 1;
 
+// --- Creative Flair: Colors for the notes ---
 const noteColors = ['#ffc', '#cfc', '#ccf', '#fcc', '#cff', '#ffb5e8'];
 
+
 // --- Event Listeners ---
+
+// ** NEW: Listeners to show and hide the modal **
+addNoteBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('hidden');
+});
+
+function closeModal() {
+    modalOverlay.classList.add('hidden');
+}
+
+closeBtn.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', (event) => {
+    // Close the modal if the user clicks on the dark background
+    if (event.target === modalOverlay) {
+        closeModal();
+    }
+});
+
+
 shoutForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const message = shoutInput.value.trim();
@@ -28,120 +54,91 @@ shoutForm.addEventListener('submit', (event) => {
     .then(res => res.json())
     .then(createdShout => {
         createNote(createdShout);
+        closeModal(); // ** NEW: Close the modal after successfully posting **
     });
 
     shoutInput.value = '';
 });
 
-// --- Functions ---
-function createNote(shout) {
-    const noteDiv = document.createElement('div');
-    noteDiv.className = 'note';
-    
-    const messageP = document.createElement('p');
-    messageP.textContent = shout.message;
-    noteDiv.appendChild(messageP);
 
-    const randomColor = noteColors[Math.floor(Math.random() * noteColors.length)];
-    noteDiv.style.backgroundColor = randomColor;
+// --- Drag and Drop Functions (No changes here) ---
+function makeDraggable(note) { /* ... same as before ... */ }
+function onDragStart(event) { /* ... same as before ... */ }
+function onDragMove(event) { /* ... same as before ... */ }
+function onDragEnd() { /* ... same as before ... */ }
 
-    const randomRotation = Math.random() * 20 - 10;
-    noteDiv.style.transform = `rotate(${randomRotation}deg)`;
-
-    const canvasWidth = notesCanvas.clientWidth;
-    const canvasHeight = notesCanvas.clientHeight;
-    const randomX = Math.floor(Math.random() * (canvasWidth - 200));
-    const randomY = Math.floor(Math.random() * (canvasHeight - 200));
-    
-    noteDiv.style.left = `${randomX}px`;
-    noteDiv.style.top = `${randomY}px`;
-
-    // Make the note draggable by both mouse and touch
-    makeDraggable(noteDiv);
-    
-    notesCanvas.appendChild(noteDiv);
-}
-
+// ... (Paste the full draggable functions from the previous code here)
+// For completeness, here they are again:
 function makeDraggable(note) {
-    // Add event listeners for both mouse and touch events
     note.addEventListener('mousedown', onDragStart);
     note.addEventListener('touchstart', onDragStart);
 }
-
-// --- Unified Drag and Drop Functions ---
-
 function onDragStart(event) {
-    // This function now handles both mousedown and touchstart
-    if (event.type === 'touchstart') {
-        // Prevent default touch behavior like scrolling
-        event.preventDefault();
-    }
-
-    draggedNote = this; // 'this' refers to the note element
+    if (event.type === 'touchstart') { event.preventDefault(); }
+    draggedNote = this;
     draggedNote.classList.add('dragging');
-
     highestZ += 1;
     draggedNote.style.zIndex = highestZ;
-
-    // Get the initial cursor/touch position
     const clientX = event.type === 'touchstart' ? event.touches[0].clientX : event.clientX;
     const clientY = event.type === 'touchstart' ? event.touches[0].clientY : event.clientY;
-
     offsetX = clientX - draggedNote.offsetLeft;
     offsetY = clientY - draggedNote.offsetTop;
-
-    // Add the move and end listeners to the whole document
     document.addEventListener('mousemove', onDragMove);
     document.addEventListener('touchmove', onDragMove, { passive: false });
     document.addEventListener('mouseup', onDragEnd);
     document.addEventListener('touchend', onDragEnd);
 }
-
 function onDragMove(event) {
     if (!draggedNote) return;
-    
-    // Prevent scrolling on mobile while dragging
-    if (event.type === 'touchmove') {
-        event.preventDefault();
-    }
-
-    // Get the current cursor/touch position
+    if (event.type === 'touchmove') { event.preventDefault(); }
     const clientX = event.type === 'touchmove' ? event.touches[0].clientX : event.clientX;
     const clientY = event.type === 'touchmove' ? event.touches[0].clientY : event.clientY;
-
     let newX = clientX - offsetX;
     let newY = clientY - offsetY;
-
     draggedNote.style.left = `${newX}px`;
     draggedNote.style.top = `${newY}px`;
 }
-
 function onDragEnd() {
-    if (draggedNote) {
-        draggedNote.classList.remove('dragging');
-    }
+    if (draggedNote) { draggedNote.classList.remove('dragging'); }
     draggedNote = null;
-
-    // IMPORTANT: Remove the listeners from the document to clean up
     document.removeEventListener('mousemove', onDragMove);
     document.removeEventListener('touchmove', onDragMove);
     document.removeEventListener('mouseup', onDragEnd);
     document.removeEventListener('touchend', onDragEnd);
 }
+// --- End of Draggable Functions ---
 
+
+// --- Main Functions (No changes here) ---
+function createNote(shout) {
+    const noteDiv = document.createElement('div');
+    noteDiv.className = 'note';
+    const messageP = document.createElement('p');
+    messageP.textContent = shout.message;
+    noteDiv.appendChild(messageP);
+    const randomColor = noteColors[Math.floor(Math.random() * noteColors.length)];
+    noteDiv.style.backgroundColor = randomColor;
+    const randomRotation = Math.random() * 20 - 10;
+    noteDiv.style.transform = `rotate(${randomRotation}deg)`;
+    const canvasWidth = notesCanvas.clientWidth;
+    const canvasHeight = notesCanvas.clientHeight;
+    const randomX = Math.floor(Math.random() * (canvasWidth - 200));
+    const randomY = Math.floor(Math.random() * (canvasHeight - 200));
+    noteDiv.style.left = `${randomX}px`;
+    noteDiv.style.top = `${randomY}px`;
+    makeDraggable(noteDiv);
+    notesCanvas.appendChild(noteDiv);
+}
 
 function loadShouts() {
     fetch(API_URL)
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
             return response.json();
         })
         .then(shouts => {
              const existingNotes = notesCanvas.querySelectorAll('.note');
              existingNotes.forEach(note => note.remove());
-             
              shouts.forEach(shout => createNote(shout));
         })
         .catch(error => {

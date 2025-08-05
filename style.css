@@ -2,62 +2,88 @@
 body {
     font-family: 'Georgia', serif;
     margin: 0;
-    overflow: hidden; /* Prevent scrollbars when dragging notes */
+    overflow: hidden;
     background-color: #333;
-    background-image: url('https://www.transparenttextures.com/patterns/cork-wallet.png'); /* Corkboard texture */
+    background-image: url('https://www.transparenttextures.com/patterns/cork-wallet.png');
 }
 
-/* The main area will be our canvas for the notes */
 #notes-canvas {
     position: relative;
     width: 100vw;
     height: 100vh;
 }
 
-/* The input form, centered on the page */
-#shout-form {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    background-color: #fff;
-    padding: 20px;
+/* --- NEW: Floating Action Button (the plus icon) --- */
+#add-note-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #4a90e2;
+    color: white;
+    font-size: 2.5rem;
+    line-height: 55px; /* Helps center the '+' vertically */
+    text-align: center;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    cursor: pointer;
+    z-index: 999;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+#add-note-btn:hover {
+    background-color: #357abd;
+    transform: scale(1.1);
+}
+
+/* --- NEW: Modal Styles --- */
+.hidden {
+    display: none !important; /* Use !important to override other display properties */
+}
+
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px 30px;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    z-index: 1000; /* Always on top */
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+}
+
+#shout-form h3 {
+    margin-top: 0;
     text-align: center;
 }
 
-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 80px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    font-family: 'Georgia', serif;
-    font-size: 1rem;
-    margin-bottom: 10px;
-}
-
-button {
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-
-button:hover {
-    background-color: #357abd;
-}
-
-
-/* Styling for each individual note */
+/* --- Note styling remains the same --- */
 .note {
     position: absolute;
     width: 200px;
@@ -69,17 +95,14 @@ button:hover {
     word-wrap: break-word;
     cursor: grab;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-    animation: fadeIn 0.5s ease-in-out;
 }
 
 .note:hover {
     transform: scale(1.05);
-    box-shadow: 10px 10px 25px rgba(0,0,0,0.4);
 }
 
 .note.dragging {
     cursor: grabbing;
-    box-shadow: 10px 10px 25px rgba(0,0,0,0.4);
     transition: none;
 }
 
@@ -88,6 +111,6 @@ button:hover {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

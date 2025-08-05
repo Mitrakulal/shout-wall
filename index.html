@@ -8,17 +8,24 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <main id="notes-canvas">
-        <form id="shout-form">
-            <textarea
-                id="shout-input"
-                name="shout"
-                placeholder="What's your positive thought?"
-                maxlength="140"
-                required
-            ></textarea>
-            <button type="submit">Post It!</button>
-        </form>
-    </main>
+    <main id="notes-canvas"></main>
+
+    <button id="add-note-btn">+</button>
+
+    <div id="modal-overlay" class="hidden">
+        <div class="modal-content">
+            <button class="close-btn">&times;</button> <form id="shout-form">
+                <h3>Post a New Note</h3>
+                <textarea
+                    id="shout-input"
+                    name="shout"
+                    placeholder="What's your positive thought?"
+                    maxlength="140"
+                    required
+                ></textarea>
+                <button type="submit">Post It!</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
