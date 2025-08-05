@@ -1,4 +1,4 @@
-// server.js - FINAL CORRECT VERSION
+// server.js - FINAL ROBUST VERSION
 
 const express = require('express');
 const cors = require('cors');
@@ -17,13 +17,11 @@ mongoose.connect(dbConnectionString)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
     .catch((error) => console.error('❌ Error connecting to MongoDB:', error));
 
-// --- MONGOOSE SCHEMA AND MODEL ---
-// ** CORRECTED: Added the 'name' field back into the schema **
 const shoutSchema = new mongoose.Schema({
     message: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     color: { type: String },
-    name: { type: String, default: 'Anonymous' } // This line was missing
+    name: { type: String, default: 'Anonymous' }
 });
 
 const Shout = mongoose.model('Shout', shoutSchema);
@@ -35,19 +33,19 @@ app.get('/shouts', async (req, res) => {
         const shouts = await Shout.find({}).sort({ createdAt: -1 });
         res.json(shouts);
     } catch (error) {
+        console.error("Error fetching shouts:", error); // Added for better logging
         res.status(500).json({ error: "Failed to fetch shouts" });
     }
 });
 
+// ** UPDATED: This route is now safer and won't crash **
 app.post('/shouts', async (req, res) => {
     try {
-        let { message, color, name } = req.body;
-        const trimmedMessage = message.trim();
-        let authorName = name.trim();
-
-        if (!authorName) {
-            authorName = 'Anonymous';
-        }
+        const { message, color, name } = req.body;
+        
+        // This is a much safer way to handle potentially missing data
+        const trimmedMessage = (message || '').trim();
+        const authorName = (name || '').trim() || 'Anonymous';
 
         if (trimmedMessage) {
             const newShout = new Shout({ 
@@ -61,6 +59,7 @@ app.post('/shouts', async (req, res) => {
             res.status(400).json({ error: "Message cannot be empty" });
         }
     } catch (error) {
+        console.error("Error creating shout:", error); // Added for better logging
         res.status(500).json({ error: "Failed to create shout" });
     }
 });
