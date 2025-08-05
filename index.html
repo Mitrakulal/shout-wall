@@ -14,7 +14,8 @@
 
     <div id="modal-overlay" class="hidden">
         <div class="modal-content">
-            <button class="close-btn">&times;</button> <form id="shout-form">
+            <button class="close-btn">&times;</button>
+            <form id="shout-form">
                 <h3>Post a New Note</h3>
                 <textarea
                     id="shout-input"
@@ -23,6 +24,17 @@
                     maxlength="140"
                     required
                 ></textarea>
+                
+                <div class="color-picker">
+                    <div class="color-swatch selected" data-color="#ffc" style="background-color: #ffc;"></div>
+                    <div class="color-swatch" data-color="#cfc" style="background-color: #cfc;"></div>
+                    <div class="color-swatch" data-color="#ccf" style="background-color: #ccf;"></div>
+                    <div class="color-swatch" data-color="#fcc" style="background-color: #fcc;"></div>
+                    <div class="color-swatch" data-color="#cff" style="background-color: #cff;"></div>
+                    <div class="color-swatch" data-color="#ffb5e8" style="background-color: #ffb5e8;"></div>
+                    <div class="color-swatch" data-color="#ffdac1" style="background-color: #ffdac1;"></div>
+                </div>
+
                 <button type="submit">Post It!</button>
             </form>
         </div>

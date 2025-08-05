@@ -1,3 +1,5 @@
+// server.js - UPDATED TO SAVE NOTE COLOR
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -15,13 +17,19 @@ mongoose.connect(dbConnectionString)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
     .catch((error) => console.error('❌ Error connecting to MongoDB:', error));
 
+// --- MONGOOSE SCHEMA AND MODEL ---
+// ** NEW: Added 'color' to our schema **
 const shoutSchema = new mongoose.Schema({
     message: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    color: { type: String } // To store the hex code of the note color
 });
 
 const Shout = mongoose.model('Shout', shoutSchema);
 
+// --- API ROUTES ---
+
+// GET /shouts (No change here, it will automatically return the new color field)
 app.get('/shouts', async (req, res) => {
     try {
         const shouts = await Shout.find({}).sort({ createdAt: -1 });
@@ -31,11 +39,15 @@ app.get('/shouts', async (req, res) => {
     }
 });
 
+// ** UPDATED: The POST route now accepts and saves the color **
 app.post('/shouts', async (req, res) => {
     try {
-        const message = req.body.message.trim();
-        if (message) {
-            const newShout = new Shout({ message: message });
+        const { message, color } = req.body; // Destructure message and color from the request
+        const trimmedMessage = message.trim();
+
+        if (trimmedMessage) {
+            // Create the new note with the message and color
+            const newShout = new Shout({ message: trimmedMessage, color: color });
             await newShout.save();
             res.status(201).json(newShout);
         } else {

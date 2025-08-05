@@ -183,3 +183,29 @@ button[type="submit"]:active {
     from { transform: translateY(-30px); opacity: 0; }
     to   { transform: translateY(0); opacity: 1; }
 }
+
+/* --- NEW: Add these styles to the bottom of your style.css file --- */
+
+.color-picker {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.selected {
+    border-color: #4a90e2;
+    transform: scale(1.1);
+}
